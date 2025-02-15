@@ -48,7 +48,8 @@ export const createLinkedList = function(value_ = null){
     }
 
     function find(value, node = basenode, index = 0){
-        if(node.value == value){
+        let key = Object.keys(node.value)[0]
+        if(key == value){
             return index
         }else {
             if(node.header == null){
@@ -126,7 +127,7 @@ export const createLinkedList = function(value_ = null){
     }
 
     function keytoString(node = basenode, result= ''){
-        result = result + ', ' + Object.keys(node.value)
+        result = result + Object.keys(node.value)+ ', ' 
         if(node.header == null){
             return result
         }else{
@@ -136,7 +137,7 @@ export const createLinkedList = function(value_ = null){
 
     function valuetoString(node = basenode, result= ''){
         let key = Object.keys(node.value)[0]
-        result = result + ', ' + node.value[key]
+        result = result + node.value[key] + ', '
         if(node.header == null){
             return result
         }else{

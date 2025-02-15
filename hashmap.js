@@ -46,8 +46,8 @@ class Hashmap{
     get(key){
         let index = this.hash(key)
         try {
-            let indexOfItem = this.buckets[index].head()
-            return indexOfItem[key]
+            let indexOfItem = this.buckets[index]
+            return indexOfItem.at(indexOfItem.find(key))[key]
         } catch (error) {
             return null
         }
@@ -67,7 +67,6 @@ class Hashmap{
             return false
         }
     }
-
     length(){
         return this.entries
     }
@@ -126,7 +125,9 @@ map.set('jacket', 'blue')
 map.set('kite', 'pink')
 map.set('lion', 'golden')
 
-// console.log(map.get("apple"))
-// console.log(map.remove('apple'))
-// console.log(map.get("apple"))
-console.log(map.entries())
+console.log(map.get("dog"))
+console.log(map.remove('dog'))
+console.log(map.get("dog"))
+console.log(map.get("lion"))
+console.log(map.remove('lion'))
+console.log(map.get("lion"))
