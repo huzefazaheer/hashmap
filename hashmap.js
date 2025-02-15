@@ -1,10 +1,13 @@
+import { createLinkedList } from "./linkedlist.js"
+
 class Hashmap{
     constructor(){
-        this.loadfactor = 0.88
+        this.loadFactor = 0.8
         this.capacity = 16
         this.buckets = []
-        this.buckets = this.genBuckets()
-    }
+        this.itemCount = 0
+        this.genBuckets()
+       }
 
     hash(key) {
         let hashCode = 0;
@@ -23,40 +26,83 @@ class Hashmap{
         for(let i=0; i<(this.capacity - this.buckets.length); i++){
             newbuckets.push(null)
         }
-        this.buckets = newbuckets.concat(this.buckets)
+        this.buckets = newbuckets.concat(this.buckets);
     }
 
     set(key, value){
-        // hash key and store value in that index
+        let index = this.hash(key)
+        if(this.buckets[index] == null){
+            this.buckets[index] = createLinkedList({[key]: value})
+        }else {
+            this.buckets[index].append({[key]: value})
+        }
+        this.itemCount = this.itemCount + 1
+        if (this.itemCount > this.loadFactor * this.capacity){
+            this.increaseBucketSize()
+        }
+        // console.log(this.buckets[index].toString())
     }
 
     get(key){
-        // hash key and retrive value in that index
+        let index = this.hash(key)
+        try {
+            let indexOfItem = this.buckets[index].head()
+            return indexOfItem[key]
+        } catch (error) {
+            return null
+        }
     }
 
     has(key){
-        // iterate over key and see if it is in hashmap or not
+        return Boolean(get(key))
     }
 
     remove(key){
-        // go to the bucket at the hash and remove the value at that place
+        let index = this.hash(key)
+        try {
+            let indexOfItem = this.buckets[index]
+            indexOfItem.removeAt(indexOfItem.find(key))
+            return true
+        } catch (error) {
+            return false
+        }
     }
 
     length(){
-        // get number of keys stored
-        // create a seperate variable to store length to avoid having to iterate over hashmap?
+        return this.entries
     }
 
     keys(){
-        // return all the keys as an array
+        let result = ''
+        for (let bucketindex in this.buckets){
+            let bucket = this.buckets[bucketindex]
+            if(bucket != null){
+                result = result + bucket.keytoString()
+            }
+        }
+        return result
     }
 
     values(){
-        // return an array of all the values
+        let result = ''
+        for (let bucketindex in this.buckets){
+            let bucket = this.buckets[bucketindex]
+            if(bucket != null){
+                result = result + bucket.valuetoString()
+            }
+        }
+        return result
     }
 
     entries(){
-        // return an array containing all key value pairs
+        let result = ''
+        for (let bucketindex in this.buckets){
+            let bucket = this.buckets[bucketindex]
+            if(bucket != null){
+                result = result + bucket.keytoString() + bucket.valuetoString() 
+            }
+        }
+        return result
     }
      
     increaseBucketSize(){
@@ -65,5 +111,22 @@ class Hashmap{
     }
 }
 
-map = new Hashmap()
-map.increaseBucketSize()
+let map = new Hashmap()
+map.genBuckets()
+map.set('apple', 'red')
+map.set('banana', 'yellow')
+map.set('carrot', 'orange')
+map.set('dog', 'brown')
+map.set('elephant', 'gray')
+map.set('frog', 'green')
+map.set('grape', 'purple')
+map.set('hat', 'black')
+map.set('ice cream', 'white')
+map.set('jacket', 'blue')
+map.set('kite', 'pink')
+map.set('lion', 'golden')
+
+// console.log(map.get("apple"))
+// console.log(map.remove('apple'))
+// console.log(map.get("apple"))
+console.log(map.entries())
